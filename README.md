@@ -126,3 +126,8 @@ Command : gobuster dir -u <ip_address> <wordlist>
 ```
 We got the Directory of /squirrelmail is interesting ...
 
+<img width="1680" height="973" alt="Image" src="https://github.com/user-attachments/assets/9c607e4c-5396-452a-8095-0ebcc8e5881b" />
+
+We go dive depper in it . we got to know about the sending the Request in the POST Method 
+
+<img width="1680" height="974" alt="Image" src="https://github.com/user-attachments/assets/6ca66d87-28cf-425d-b803-4f2027547748" />
