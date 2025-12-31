@@ -57,7 +57,7 @@ Host script results:
 |   FQDN: skynet
 |_  System time: 2025-12-26T22:38:58-06:00
 ```
-## SMBClient Scan
+### SMBClient Scan
 Listing the Smbshares 
 
 <img width="759" height="362" alt="Image" src="https://github.com/user-attachments/assets/c326302c-c5be-43bf-85d2-ebb71b1a6818" />
