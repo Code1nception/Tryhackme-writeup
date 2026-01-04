@@ -57,7 +57,7 @@ An interesting directory, ```/hidden```, was discovered during enumeration.
 
 This page revealed usernames such as Philip, Hugo, and c0ldd.
 
-another directory ```/wp-admin``` its redirect to the ```/wp-login```
+another directory ```/wp-admin``` its redirect to the ```/wp-login``` Wordpress login page.
 
 <img width="1680" height="973" alt="Image" src="https://github.com/user-attachments/assets/93782abe-ba73-469e-94d5-61e886015c07" />
 
@@ -226,7 +226,7 @@ var
 vmlinuz
 vmlinuz.old
 ```
-We got the shell but make it bash shell for make it easy to use so use the command ``` python3 -c 'import pty;pty.spawn("/bin/bash")'```
+The shell was upgraded to an interactive Bash shell for easier interaction and use the command ``` python3 -c 'import pty;pty.spawn("/bin/bash")'```
 ```
 $ python3 -c 'import pty;pty.spawn("/bin/bash")'
 python3 -c 'import pty;pty.spawn("/bin/bash")'
@@ -390,3 +390,12 @@ wq##############################################
 ```
 
 We Successfully Got the root access and root.txt 💥
+
+## Impact
+An attacker exploiting these weaknesses could gain full administrative control of the system, leading to complete compromise.
+
+## Mitigation
+- Disable file editing in the WordPress admin panel
+- Enforce strong password policies and avoid credential reuse
+- Limit sudo permissions using the principle of least privilege
+- Keep CMS components fully updated
