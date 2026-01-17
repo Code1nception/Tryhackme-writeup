@@ -7,3 +7,4 @@
 ### 📄 [Skynet](https://github.com/Code1nception/Tryhackme-writeup/blob/main/Skynet.md)
 ### 📄 [Daily Bugle](https://github.com/Code1nception/Tryhackme-writeup/blob/main/Dailybugle.md)
 ### 📄 [Coldbox](https://github.com/Code1nception/Tryhackme-writeup/blob/main/Coldbox.md)
+### 📄 [Tokyo Ghoul](https://github.com/Code1nception/Tryhackme-writeup/blob/main/Tokyo_Ghoul.md)
